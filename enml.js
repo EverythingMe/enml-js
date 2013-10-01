@@ -138,7 +138,7 @@
           writer.writeAttribute('type', 'checkbox');
 
         }	else if(elem == 'en-media'){
-
+          
           var type = null;
           var hash = null;
           var width = 0;
@@ -151,48 +151,16 @@
             if(attr[0] == 'height') height = attr[1];
           });
 
-          hash = BodyHashOfENMLHash(hash);
+          if(!type.match('image')) return;
+          writer.startElement('img');
+          
           var resource = resources[hash];
-          
-          if(!resource) return;
-          var resourceUrl = resource.url || resource;
-          var resourceTitle = resource.title || resource.url || '';
-          
-          if(type.match('image')) {
-            writer.startElement('img');
-            writer.writeAttribute('title', resourceTitle);
 
-          } else if(type.match('audio')) {
-            
-            
-            writer.writeElement('p', resourceTitle);
-            writer.startElement('audio');
-            writer.writeAttribute('controls', '');
-            writer.text('Your browser does not support the audio tag.');
-            writer.startElement('source');
-            mediaTagStarted = true;
-
-          } else if(type.match('video')) {
-            writer.writeElement('p', resourceTitle);
-            writer.startElement('video');
-            writer.writeAttribute('controls', '');
-            writer.text('Your browser does not support the video tag.');
-            writer.startElement('source');
-            mediaTagStarted = true;
-          } else {
-            writer.startElement('a');
-            linkTagStarted = true;
-            linkTitle = resourceTitle;
+          if(resource) {
+            writer.writeAttribute('src', 'data:'+type+';base64,'+resource);
           }
-
-          if(resourceUrl && linkTagStarted) {
-            writer.writeAttribute('href', resourceUrl);
-            writer.writeAttribute('class', 'en-res-link');
-          } else {
-            writer.writeAttribute('src', resourceUrl);
-          }
-
-          if(width) writer.writeAttribute ('width', width);
+          
+          if(width) writer.writeAttribute('width', width);
           if(height) writer.writeAttribute('height', height);
 
         }	else {
