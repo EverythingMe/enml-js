@@ -154,10 +154,10 @@
           if(!type.match('image')) return;
           writer.startElement('img');
           
-          var resource = resources[hash];
+          var src = resources[hash];
 
-          if(resource) {
-            writer.writeAttribute('src', 'data:'+type+';base64,'+resource);
+          if(src) {
+            writer.writeAttribute('src', src);
           }
           
           if(width) writer.writeAttribute('width', width);
